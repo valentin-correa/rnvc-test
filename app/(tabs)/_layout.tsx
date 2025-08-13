@@ -1,4 +1,5 @@
-import { Tabs } from 'expo-router';
+import 'react-native-reanimated';
+import { Tabs } from 'expo-router/tabs';
 import React from 'react';
 import { Platform } from 'react-native';
 
@@ -30,14 +31,14 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="MiCamera"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Cámara',
+          tabBarIcon: ({ color }: { color: string }) => <IconSymbol size={28} name="camera.fill" color={color} />,
         }}
       />
     </Tabs>

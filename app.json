@@ -16,6 +16,7 @@
       "bundleIdentifier": "com.vcorrea.test-camera"
     },
     "android": {
+      "minSdkVersion": 26,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -42,7 +43,13 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "react-native-vision-camera"
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera.",
+          "enableFrameProcessors": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

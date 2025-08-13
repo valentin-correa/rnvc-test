@@ -1,52 +1,40 @@
-import React, { useState } from "react";
-import { View, Button, StyleSheet, Text } from "react-native";
-import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
+import { router } from "expo-router";
+import React from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 
-export default function CameraComponent() {
-  const [showCamera, setShowCamera] = useState(false);
-  const { hasPermission, requestPermission } = useCameraPermission();
-  const device = useCameraDevice("back");
-
-  const handleOpenCamera = async () => {
-    if (!hasPermission) {
-      await requestPermission();
-    }
-    setShowCamera(true);
+export default function HomeScreen() {
+  const openCamera = () => {
+    // Navegamos a la pestaña de la cámara usando su name
+    router.push('./../MiCamera');
   };
 
-  if (showCamera) {
-    if (!hasPermission) {
-      return (
-        <View style={styles.center}>
-          <Text>Se necesita permiso para usar la cámara</Text>
-          <Button title="Conceder permiso" onPress={requestPermission} />
-        </View>
-      );
-    }
-    if (!device) {
-      return (
-        <View style={styles.center}>
-          <Text>No se encontró dispositivo de cámara</Text>
-        </View>
-      );
-    }
-    return (
-      <Camera
-        style={{ flex: 1 }}
-        device={device}
-        isActive={true}
-      />
-    );
-  }
-
   return (
-    <View style={styles.center}>
-      <Button title="Abrir cámara" onPress={handleOpenCamera} />
+    <View style={styles.container}>
+      <Text style={styles.welcome}>¡Bienvenido a la aplicación!</Text>
+      <Text style={styles.subtitle}>Esta es la pantalla principal</Text>
+      <Button title="Abrir cámara" onPress={openCamera} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
+    padding: 20,
+  },
+  welcome: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+  },
 });
-  
