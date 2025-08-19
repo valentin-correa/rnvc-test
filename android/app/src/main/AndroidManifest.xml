@@ -26,6 +26,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="testcamera"/>
+        <data android:scheme="exp+testcamera"/>
       </intent-filter>
     </activity>
   </application>

@@ -1,7 +1,8 @@
+import { detectLuminanceAndFocus } from "@/plugins/js";
 import React, { useRef, useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { runOnJS } from "react-native-reanimated";
-import { Camera, PhotoFile, runAtTargetFps, useCameraDevice, useCameraPermission, useFrameProcessor  } from "react-native-vision-camera";
+import { Camera, PhotoFile, useCameraDevice, useCameraPermission, useFrameProcessor } from "react-native-vision-camera";
+import { useRunOnJS } from "react-native-worklets-core";
 
 export default function MiCamera() {
     const camera = useRef<Camera>(null);
@@ -10,32 +11,19 @@ export default function MiCamera() {
     const [isActive, setIsActive] = useState(true);
     const [brightness, setBrightness] = useState(0);
 
+    const setBrightnessOnJS = useRunOnJS(setBrightness, []);
+
     const frameProcessor = useFrameProcessor((frame) => {
         'worklet'
 
-        if (!frame || !frame.isValid) return;
+        // frame is a VisionCamera Frame HostObject in worklet context
+        if (!frame) return;
 
-        runAtTargetFps(1, () => {
+        const { luminance, focus } = detectLuminanceAndFocus(frame)
 
-            const buffer = frame.toArrayBuffer()
-            const data = new Uint8Array(buffer)
+        // send luminance back to JS
+        setBrightnessOnJS(luminance)
 
-            console.log('pixel count', data.length);
-
-            let luminanceSum = 0;
-
-            const sampleSize = data.length
-
-            for (let i = 0; i < sampleSize; i++) {
-                luminanceSum += data[i]
-            }
-
-            const avgLuma = luminanceSum / sampleSize
-            console.log(avgLuma)
-
-            setBrightness(avgLuma)
-
-        })
     }, [])
 
     // Solicitar permisos si no los tiene
